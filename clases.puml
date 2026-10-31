@@ -1,0 +1,73 @@
+@startuml
+skinparam classAttributeIconSize 0
+class Game {
+  -currentState: String
+  -score: int
+  -lives: int
+  -ball: Ball
+  -paddle: Paddle
+  -level: Level
+  -ui: UI
+  +new(): Game
+  +handleInput(key: String)
+  +update(dt: float)
+  +draw()
+  +changeState(newState: String)
+  +checkCollisions()
+}
+class Ball {
+  -x: float
+  -y: float
+  -radius: float
+  -speedX: float
+  -speedY: float
+  +new(x: float, y: float): Ball
+  +update(dt: float)
+  +draw()
+  +bounce(axis: String)
+}
+class Paddle {
+  -x: float
+  -y: float
+  -width: float
+  -height: float
+  -speed: float
+  +new(x: float, y: float): Paddle
+  +moveLeft(dt: float)
+  +moveRight(dt: float)
+  +update(dt: float)
+  +draw()
+}
+class Brick {
+  -x: float
+  -y: float
+  -width: float
+  -height: float
+  -isDestroyed: boolean
+  +new(x: float, y: float): Brick
+  +breakBrick()
+  +draw()
+}
+class Level {
+  -number: int
+  -bricks: List<Brick>
+  +new(number: int): Level
+  +loadBricks()
+  +isCompleted(): boolean
+  +draw()
+}
+class UI {
+  -message: String
+  +new(): UI
+  +drawScore(score: int)
+  +drawLives(lives: int)
+  +drawMessage(message: String)
+}
+Game *-- "1" Ball : contiene
+Game *-- "1" Paddle : contiene
+Game *-- "1" Level : contiene
+Game o-- "1" UI : utiliza
+Level *-- "0..*" Brick : compone
+Ball --> Paddle : colisiona
+Ball --> Brick : colisiona
+@enduml
